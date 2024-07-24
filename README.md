@@ -91,6 +91,9 @@ This solution stops at the point where the securities are issued and the holder 
    - Receives a new version of the securities to be deposited back into the collateral pool
    - This is required to be performed in one transaction to ensure the collateral pool is
      always backed by securities, working similar to the mechanics of a flash loan
+- publishing of events that can be retrieved and messages derived to be importing in bank trading
+   system
+- addition of royalties for the platform owner when issuer interacts with the system
 
 
 ## Solution Design Comments
@@ -115,9 +118,9 @@ What's the Radix guidelines for implementing RWA where rights are involved?
    directory to this example.
 
    ```
-   git clone https://github.com/radixdlt/official-examples.git
+   git clone https://github.com/RoterHund/securities-manager.git
 
-   cd official-examples/step-by-step/13-candy-store-with-recallable-badges
+   cd securities-manager
    ```
 
 2. Run the setup script.
@@ -125,7 +128,6 @@ What's the Radix guidelines for implementing RWA where rights are involved?
    On Linux or MacOS:
 
    ```sh
-   cd security_manager
    source ./setup.sh
    ```
 
