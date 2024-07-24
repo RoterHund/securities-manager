@@ -1,0 +1,38 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Investor Badge to call the protected method investor_claim_corporate_action
+    Address("${investor_account}")
+    "create_proof_of_non_fungibles"
+    Address("${investor_kyc_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Withdraw an amount of the current version of the securities
+    Address("${investor_account}")
+    "withdraw"
+    Address("${bond_security_v1}")
+    Decimal("100")
+;
+TAKE_FROM_WORKTOP
+    Address("${bond_security_v1}")
+    Decimal("100")
+    Bucket("security_bucket")
+;
+CALL_METHOD
+    Address("${component}")
+    "investor_claim_corporate_action"
+    Bucket("security_bucket")
+;
+CALL_METHOD
+    # Receives coupon payment and new securities version
+    Address("${investor_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

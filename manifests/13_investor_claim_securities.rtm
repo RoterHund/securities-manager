@@ -1,0 +1,41 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Investor Badge to call the protected method investor_claim_security
+    Address("${investor_account}")
+    "create_proof_of_non_fungibles"
+    Address("${investor_kyc_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Withdraw the subscription nft to pass to the investor_claim_security method
+    Address("${investor_account}")
+    "withdraw_non_fungibles"
+    Address("${investor_subscription_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+TAKE_NON_FUNGIBLES_FROM_WORKTOP
+    Address("${investor_subscription_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+    Bucket("subscription_bucket")
+;
+CALL_METHOD
+    Address("${component}")
+    "investor_claim_security"
+    Bucket("subscription_bucket")
+;
+CALL_METHOD
+    Address("${investor_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

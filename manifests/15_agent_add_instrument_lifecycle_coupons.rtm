@@ -1,0 +1,30 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Issuer Agent Badge to call protected method agent_add_instrument_lifecycle
+    Address("${agent_account}")
+    "create_proof_of_non_fungibles"
+    Address("${agent_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Passes in the bond instrument, the corporate action type
+    # and the percent to apply to the security holdings
+    Address("${component}")
+    "agent_add_instrument_lifecycle"
+    Address("${bond_instrument}")
+    "Coupon"
+    Decimal("5")
+;
+CALL_METHOD
+    Address("${component}")
+    "agent_add_instrument_lifecycle"
+    Address("${bond_instrument}")
+    "Coupon"
+    Decimal("5")
+;

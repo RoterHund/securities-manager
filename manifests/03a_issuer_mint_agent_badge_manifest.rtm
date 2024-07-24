@@ -1,0 +1,35 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+MINT_NON_FUNGIBLE
+    # Mint Issuer Agent Badge passing in the Issuer Badge Address & Local ID
+    Address("${agent_badge}")
+    Map<NonFungibleLocalId, Tuple>(
+        NonFungibleLocalId("#2#") => Tuple(
+            Tuple(
+                Address("${issuer_badge}"),
+                NonFungibleLocalId("#1#"),
+                "LEI_AGENT2",
+            )
+        )
+    )
+;
+CALL_METHOD
+    # Deposit in Issuer Agent Account or Issuer Account
+    # If deposit to Issuer Account, manifest 03b_transfer_issuer_badge.rtm should be used to transfer to Issuer Agent Account
+    Address("${agent_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

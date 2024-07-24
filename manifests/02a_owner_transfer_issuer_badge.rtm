@@ -1,0 +1,29 @@
+# Transfer Issuer Badge from Security Manager Account to Issuer Account
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Requires proof of Security Manager Badge due to Restricted Withdrawal
+    Address("${account}")
+    "create_proof_of_amount"
+    Address("${security_manager_owner_badge}")
+    Decimal("1")
+;
+CALL_METHOD
+    # Withdraw Issuer Badge from Security Manager Account
+    Address("${account}")
+    "withdraw_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Deposit in Issuer Account
+    Address("${issuer_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

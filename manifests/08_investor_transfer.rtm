@@ -1,0 +1,53 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Investor Badge to call the protected method investor_transfer_payment
+    Address("${investor_account}")
+    "create_proof_of_non_fungibles"
+    Address("${investor_kyc_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Withdraws the payment amount
+    Address("${investor_account}")
+    "withdraw"
+    Address("${xrd}")
+    Decimal("1000")
+;
+TAKE_FROM_WORKTOP
+    Address("${xrd}")
+    Decimal("1000")
+    Bucket("payment_bucket")
+;
+CALL_METHOD
+    # Create Proof of Subscription NFT to pass into the investor_transfer_payment method
+    Address("${investor_account}")
+    "create_proof_of_non_fungibles"
+    Address("${investor_subscription_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+POP_FROM_AUTH_ZONE
+    # Pop from Auth Zone to pass into investor_transfer_payment method
+    Proof("subscription_proof")
+;
+CALL_METHOD
+    # Pass in the proof along with the payment bucket
+    Address("${component}")
+    "investor_transfer_payment"
+    Proof("subscription_proof")
+    Bucket("payment_bucket")
+;
+CALL_METHOD
+    # Receives a refund if the payment amount transferred is too large
+    Address("${investor_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

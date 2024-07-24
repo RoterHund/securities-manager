@@ -1,0 +1,16 @@
+CALL_METHOD
+    # resim faucet address
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_FUNCTION
+    Address("${package}")
+    "SecuritiesManager"
+    "instantiate_securities_manager"
+;
+CALL_METHOD
+    Address("${account}")
+    "deposit_batch"
+    Expression("ENTIRE_WORKTOP")
+;

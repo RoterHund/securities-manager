@@ -1,0 +1,43 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to call protected method create_bond_instrument
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to pass into the create_bond_instrument method
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+POP_FROM_AUTH_ZONE
+    # Pop from Auth Zone to pass into create_bond_instrument method
+    Proof("issuer_proof")
+;
+CALL_METHOD
+    # Pass in proof along with the security_type, security_form, name
+    # & string to set on the metadata
+    Address("${component}")
+    "issuer_create_instrument"
+    Proof("issuer_proof")
+    "Bond"
+    "Bearer"
+    "Bond1"
+    "BON1"
+;
+CALL_METHOD
+    # displays all instruments currently set up
+    Address("${component}")
+    "get_instruments"
+;

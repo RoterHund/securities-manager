@@ -1,0 +1,37 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to call protected method create_bond_instrument
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to pass into create_bond_instrument method
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+POP_FROM_AUTH_ZONE
+    # Pop from Auth Zone to pass into create_bond_instrument method
+    Proof("issuer_proof")
+;
+CALL_METHOD
+    # Pass in the Proof, the instrument address and the SFTR metadata key & value to be updated
+    # Note this transaction is rejected as the issuer is not permissioned to change SFTR fields 
+    Address("${component}")
+    "issuer_update_instrument_metadata"
+    Proof("issuer_proof")
+    Address("${bond_instrument}")
+    "sftr_security_type"
+    "RMBS"
+;

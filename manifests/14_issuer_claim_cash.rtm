@@ -1,0 +1,25 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to call the protected method issuer_claim_cash
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    Address("${component}")
+    "issuer_claim_cash"
+    Address("${bond_instrument}")
+;
+CALL_METHOD
+    Address("${issuer_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

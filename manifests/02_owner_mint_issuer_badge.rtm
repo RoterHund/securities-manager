@@ -1,0 +1,31 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create proof of holding the security manager owner badge to mint the Issuer Badge
+    Address("${account}")
+    "create_proof_of_amount"
+    Address("${security_manager_owner_badge}")
+    Decimal("1")
+;
+MINT_NON_FUNGIBLE
+    # Mint Issuer Badge passing in the Legal Entity Identifier (LEI) of the issuer and integer for the badge id
+    Address("${issuer_badge}")
+    Map<NonFungibleLocalId, Tuple>(
+        NonFungibleLocalId("#1#") => Tuple(
+            Tuple(
+                "LEI_ISSUER12345",
+            )
+        )
+    )
+;
+CALL_METHOD
+    # Deposit in Issuer Account or Security Manager Account
+    # If deposited to Security Manager Account, manifest 02b_transfer_issuer_badge.rtm can be used to transfer to Issuer Account
+    Address("${issuer_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;

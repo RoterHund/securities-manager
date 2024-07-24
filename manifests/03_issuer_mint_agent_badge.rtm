@@ -1,0 +1,43 @@
+CALL_METHOD
+    Address("component_sim1cptxxxxxxxxxfaucetxxxxxxxxx000527798379xxxxxxxxxhkrefh")
+    "lock_fee"
+    Decimal("5000")
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to call protected  method mint_issuer_agent_badge
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+CALL_METHOD
+    # Create Proof of Issuer Badge to pass into mint_issuer_agent_badge method
+    Address("${issuer_account}")
+    "create_proof_of_non_fungibles"
+    Address("${issuer_badge}")
+    Array<NonFungibleLocalId>(
+        NonFungibleLocalId("#1#")
+    )
+;
+POP_FROM_AUTH_ZONE
+    # Pop from Auth Zone to pass into mint_issuer_agent_badge method
+    Proof("issuer_proof")
+;
+CALL_METHOD
+    # Mint Issuer Agent Badge passing in the Agent LEI & Local ID to be minted
+    Address("${component}")
+    "issuer_mint_agent_badge"
+    Proof("issuer_proof")
+    "LEI_AGENT12345"
+    1u64
+;
+CALL_METHOD
+    # Deposit in Issuer Agent Account or Issuer Account
+    # If deposited to Issuer Account, manifest 03b_transfer_issuer_badge.rtm should be used to transfer to Issuer Agent Account
+    Address("${agent_account}")
+    "try_deposit_batch_or_refund"
+    Expression("ENTIRE_WORKTOP")
+    Enum<0u8>()
+;
