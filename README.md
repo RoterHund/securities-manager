@@ -146,7 +146,7 @@ What's the Radix guidelines for implementing RWA where rights are involved?
    ```
    This creates the following resources
    - Securities Manager Owner Badge (OWNER") -> deposited to owner account
-   - Platform Badge ("AUTO") -> deposited to component vault
+   - Platform Badge ("SYSTEM") -> deposited to component vault
    - Issuer Badge ("ISSUER") -> created as a resource manager
    - Agent Badge (AGENT") -> created as a resource manager
    - Investor KYC Badge ("INVESTOR") -> created as a resource manager
